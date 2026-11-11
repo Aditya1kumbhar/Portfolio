@@ -12,6 +12,10 @@ export default function Preloader({ onComplete }: PreloaderProps) {
   const topPanelRef = useRef<HTMLDivElement>(null)
   const bottomPanelRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
+  const letterARef = useRef<HTMLSpanElement>(null)
+  const letterKRef = useRef<HTMLSpanElement>(null)
+  const dotRef = useRef<HTMLSpanElement>(null)
+  const counterRef = useRef<HTMLDivElement>(null)
   const [isDone, setIsDone] = useState(false)
 
   useEffect(() => {
@@ -44,16 +48,45 @@ export default function Preloader({ onComplete }: PreloaderProps) {
       },
     })
 
-    // Fade out text content
+    // At 100 percent the monogram splits: A drops, K rises, dot and counter fade
     tl.to(
-      contentRef.current,
+      letterARef.current,
+      {
+        yPercent: 120,
+        duration: 0.6,
+        ease: 'power3.inOut',
+      },
+      '+=0.1'
+    )
+
+    tl.to(
+      letterKRef.current,
+      {
+        yPercent: -120,
+        duration: 0.6,
+        ease: 'power3.inOut',
+      },
+      '<'
+    )
+
+    tl.to(
+      dotRef.current,
       {
         opacity: 0,
-        y: -16,
-        duration: 0.3,
+        duration: 0.25,
         ease: 'power2.in',
       },
-      '+=0.15'
+      '<'
+    )
+
+    tl.to(
+      counterRef.current,
+      {
+        opacity: 0,
+        duration: 0.25,
+        ease: 'power2.in',
+      },
+      '<'
     )
 
     // Split curtain exit
@@ -64,7 +97,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         duration: 0.85,
         ease: 'power4.inOut',
       },
-      '-=0.05'
+      '-=0.2'
     )
 
     tl.to(
@@ -109,9 +142,21 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
       >
         <div className="font-display font-extrabold text-7xl md:text-9xl tracking-tighter text-[var(--color-ink)] mb-4">
-          AK<span className="text-[var(--color-accent)]">.</span>
+          <span className="inline-block overflow-hidden">
+            <span ref={letterARef} className="inline-block will-change-transform">
+              A
+            </span>
+          </span>
+          <span className="inline-block overflow-hidden">
+            <span ref={letterKRef} className="inline-block will-change-transform">
+              K
+            </span>
+          </span>
+          <span ref={dotRef} className="text-[var(--color-accent)]">
+            .
+          </span>
         </div>
-        <div className="font-mono text-sm md:text-base tabular text-[var(--color-ink-soft)] tracking-widest">
+        <div ref={counterRef} className="font-mono text-sm md:text-base tabular text-[var(--color-ink-soft)] tracking-widest">
           {progress.toString().padStart(3, '0')}%
         </div>
       </div>
