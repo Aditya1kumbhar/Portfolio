@@ -41,7 +41,7 @@ export default function About() {
           if (split && split.words && split.words.length > 0) {
             const anim = gsap.fromTo(
               split.words,
-              { opacity: 0.16 },
+              { opacity: 0.35 },
               {
                 opacity: 1,
                 stagger: 0.05,
@@ -129,7 +129,7 @@ export default function About() {
                       d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
                     />
                   </defs>
-                  <text className="font-mono text-[7px] uppercase tracking-[0.2em] fill-[var(--color-ink)] font-semibold">
+                  <text className="font-mono text-[6.5px] uppercase tracking-[0.14em] fill-[var(--color-ink)] font-semibold">
                     <textPath href="#circleTextPath" startOffset="0%">
                       {profile.tagline.toUpperCase()} •
                     </textPath>

@@ -126,141 +126,99 @@ export default function Work() {
     const cards = container.querySelectorAll<HTMLElement>('.project-card')
     if (cards.length === 0) return
 
-    // Condition 1: Desktop pinned chapter scrub
-    mm.add(
-      '(min-width: 1024px) and (prefers-reduced-motion: no-preference)',
-      () => {
-        let alive = true
-        const splits: SplitText[] = []
+    // Unified unpinned motion for all viewport widths
+    mm.add('(prefers-reduced-motion: no-preference)', () => {
+      let alive = true
+      const splits: SplitText[] = []
 
-        const buildChapters = () => {
-          if (!alive) return
-
-          cards.forEach((card) => {
-            const zoomEl = card.querySelector<HTMLElement>('.project-zoom')
-            const h3 = card.querySelector<HTMLHeadingElement>('h3')
-            const metaEl = card.querySelector<HTMLElement>('.project-meta')
-
-            const tl = gsap.timeline({
+      cards.forEach((card) => {
+        // (a) Image zoom scrub
+        const zoomEl = card.querySelector<HTMLElement>('.project-zoom')
+        if (zoomEl) {
+          gsap.fromTo(
+            zoomEl,
+            { scale: 1.18 },
+            {
+              scale: 1,
+              ease: 'none',
               scrollTrigger: {
                 trigger: card,
-                start: 'top top+=96',
-                end: '+=55%',
-                scrub: 0.5,
-                pin: true,
-                anticipatePin: 1,
-                invalidateOnRefresh: true,
+                start: 'top bottom',
+                end: 'top 25%',
+                scrub: 0.4,
               },
-            })
-
-            if (zoomEl) {
-              tl.fromTo(
-                zoomEl,
-                { scale: 1.18 },
-                { scale: 1, duration: 1, ease: 'none' },
-                0
-              )
             }
-
-            if (h3) {
-              try {
-                const split = SplitText.create(h3, { type: 'chars', mask: 'chars' })
-                splits.push(split)
-                if (split.chars && split.chars.length > 0) {
-                  tl.from(
-                    split.chars,
-                    {
-                      yPercent: 120,
-                      duration: 0.45,
-                      ease: 'power3.out',
-                      stagger: 0.015,
-                    },
-                    0
-                  )
-                }
-              } catch (err) {
-                console.warn('Work SplitText char split failed:', err)
-              }
-            }
-
-            if (metaEl) {
-              const metaChildren = Array.from(metaEl.children).filter(
-                (child) => child.tagName.toLowerCase() !== 'h3'
-              )
-              if (metaChildren.length > 0) {
-                tl.fromTo(
-                  metaChildren,
-                  { y: 26, opacity: 0 },
-                  {
-                    y: 0,
-                    opacity: 1,
-                    duration: 0.55,
-                    ease: 'power3.out',
-                    stagger: 0.07,
-                  },
-                  0.45
-                )
-              }
-            }
-          })
-
-          ScrollTrigger.refresh()
+          )
         }
 
-        if (typeof document !== 'undefined' && document.fonts) {
-          document.fonts.ready.then(buildChapters)
-        } else {
-          buildChapters()
-        }
-
-        return () => {
-          alive = false
-          splits.forEach((s) => s.revert())
-        }
-      }
-    )
-
-    // Condition 2: Mobile zoom scrub + single entrance reveal (no pin, no split-text)
-    mm.add(
-      '(max-width: 1023.98px) and (prefers-reduced-motion: no-preference)',
-      () => {
-        cards.forEach((card) => {
-          const zoomEl = card.querySelector<HTMLElement>('.project-zoom')
-          if (zoomEl) {
+        // (c) The meta panel's direct children except the h3
+        const metaEl = card.querySelector<HTMLElement>('.project-meta')
+        if (metaEl) {
+          const metaChildren = Array.from(metaEl.children).filter(
+            (child) => child.tagName.toLowerCase() !== 'h3'
+          )
+          if (metaChildren.length > 0) {
             gsap.fromTo(
-              zoomEl,
-              { scale: 1.12 },
+              metaChildren,
+              { y: 26, opacity: 0 },
               {
-                scale: 1,
-                ease: 'none',
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: 'power3.out',
+                stagger: 0.07,
                 scrollTrigger: {
                   trigger: card,
-                  start: 'top bottom',
-                  end: 'top 30%',
-                  scrub: 0.4,
+                  start: 'top 74%',
+                  once: true,
                 },
               }
             )
           }
+        }
+      })
 
-          gsap.fromTo(
-            card,
-            { opacity: 0, y: 28 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.9,
-              ease: 'power3.out',
-              scrollTrigger: {
-                trigger: card,
-                start: 'top 85%',
-                once: true,
-              },
+      // (b) The h3 title split after fonts are ready
+      const initSplits = () => {
+        if (!alive) return
+
+        cards.forEach((card) => {
+          const h3 = card.querySelector<HTMLHeadingElement>('h3')
+          if (h3) {
+            try {
+              const split = SplitText.create(h3, { type: 'chars', mask: 'chars' })
+              splits.push(split)
+              if (split.chars && split.chars.length > 0) {
+                gsap.from(split.chars, {
+                  yPercent: 120,
+                  duration: 0.7,
+                  ease: 'power3.out',
+                  stagger: 0.015,
+                  scrollTrigger: {
+                    trigger: card,
+                    start: 'top 78%',
+                    once: true,
+                  },
+                })
+              }
+            } catch (err) {
+              console.warn('Work SplitText char split failed:', err)
             }
-          )
+          }
         })
       }
-    )
+
+      if (typeof document !== 'undefined' && document.fonts) {
+        document.fonts.ready.then(initSplits)
+      } else {
+        initSplits()
+      }
+
+      return () => {
+        alive = false
+        splits.forEach((s) => s.revert())
+      }
+    })
 
     // Condition 3: Reduced motion - neither condition matches, cards remain fully visible
 
