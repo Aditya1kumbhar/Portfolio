@@ -96,7 +96,7 @@ export const SITE_CONFIG: SiteConfig = {
   canonicalUrl: 'https://adityakumbhar.vercel.app',
   title: 'Aditya Kumbhar - Full-Stack Developer and AI/ML Builder, Pune',
   description: 'Portfolio of Aditya Kumbhar, a Pune-based full-stack developer and AI/ML builder. Creator of ORCA Tarang, VitalGuard C3, SevaCare, and RateIT. Open to internships.',
-  ogImage: '/images/og.jpg',
+  ogImage: '/og-cover.jpg',
 }
 
 export const profile: Profile = {
