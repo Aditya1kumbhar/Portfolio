@@ -50,6 +50,7 @@ export default function SectionHeader({ label, title, className = '' }: SectionH
               once: true,
             },
           })
+          ScrollTrigger.refresh()
         }
       } catch (err) {
         // If SplitText throws for any reason, leave the title as plain text

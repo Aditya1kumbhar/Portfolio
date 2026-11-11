@@ -77,12 +77,9 @@ export default function Hero() {
     mm.add(
       '(min-width: 1024px) and (prefers-reduced-motion: no-preference)',
       () => {
-        const nameLines = section.querySelectorAll('.hero-name-line')
-        const topbar = section.querySelector('.hero-topbar')
-        const lower = section.querySelector('.hero-lower')
-        const portrait = section.querySelector('.hero-portrait')
         const canvasEl = section.querySelector('canvas')
         const marqueeWrap = section.querySelector('.hero-stats-wrap')
+        const contentEl = contentRef.current
 
         const exitTl = gsap.timeline({
           scrollTrigger: {
@@ -95,34 +92,33 @@ export default function Hero() {
           },
         })
 
-        if (topbar) {
-          exitTl.to(topbar, { opacity: 0, duration: 0.3, ease: 'none' }, 0)
-        }
-        if (lower) {
-          exitTl.to(lower, { opacity: 0, duration: 0.65, ease: 'none' }, 0)
-        }
-        if (nameLines.length > 0) {
-          exitTl.to(
-            nameLines,
+        if (contentEl) {
+          exitTl.fromTo(
+            contentEl,
+            { yPercent: 0, scale: 1, opacity: 1 },
             {
-              yPercent: -6,
-              scale: 0.94,
-              transformOrigin: '50% 100%',
+              yPercent: -4,
+              scale: 0.98,
+              opacity: 0,
               duration: 1,
               ease: 'none',
+              transformOrigin: '50% 0%',
             },
             0
           )
         }
-        if (portrait) {
-          exitTl.to(portrait, { yPercent: 8, duration: 1, ease: 'none' }, 0)
-        }
         if (canvasEl) {
-          exitTl.to(canvasEl, { yPercent: 12, duration: 1, ease: 'none' }, 0)
+          exitTl.fromTo(
+            canvasEl,
+            { yPercent: 0 },
+            { yPercent: 12, duration: 1, ease: 'none' },
+            0
+          )
         }
         if (marqueeWrap) {
-          exitTl.to(
+          exitTl.fromTo(
             marqueeWrap,
+            { opacity: 1 },
             { opacity: 0, duration: 0.25, ease: 'none' },
             0.75
           )

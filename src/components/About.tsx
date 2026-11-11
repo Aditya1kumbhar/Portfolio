@@ -55,6 +55,7 @@ export default function About() {
               }
             )
             bioTrigger = anim.scrollTrigger ?? null
+            ScrollTrigger.refresh()
           }
         }
       } catch (err) {

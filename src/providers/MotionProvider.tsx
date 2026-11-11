@@ -69,7 +69,17 @@ export default function MotionProvider({ children }: { children: React.ReactNode
     }
     window.addEventListener('load', onLoad)
 
+    let cancelled = false
+    if (typeof document !== 'undefined' && document.fonts) {
+      document.fonts.ready.then(() => {
+        if (!cancelled) {
+          ScrollTrigger.refresh()
+        }
+      })
+    }
+
     return () => {
+      cancelled = true
       gsap.ticker.remove(updateLenis)
       lenis.off('scroll', onScroll)
       lenis.destroy()

@@ -130,78 +130,91 @@ export default function Work() {
     mm.add(
       '(min-width: 1024px) and (prefers-reduced-motion: no-preference)',
       () => {
+        let alive = true
         const splits: SplitText[] = []
 
-        cards.forEach((card) => {
-          const zoomEl = card.querySelector<HTMLElement>('.project-zoom')
-          const h3 = card.querySelector<HTMLHeadingElement>('h3')
-          const metaEl = card.querySelector<HTMLElement>('.project-meta')
+        const buildChapters = () => {
+          if (!alive) return
 
-          const tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: card,
-              start: 'top top+=96',
-              end: '+=55%',
-              scrub: 0.5,
-              pin: true,
-              anticipatePin: 1,
-            },
-          })
+          cards.forEach((card) => {
+            const zoomEl = card.querySelector<HTMLElement>('.project-zoom')
+            const h3 = card.querySelector<HTMLHeadingElement>('h3')
+            const metaEl = card.querySelector<HTMLElement>('.project-meta')
 
-          if (zoomEl) {
-            tl.fromTo(
-              zoomEl,
-              { scale: 1.18 },
-              { scale: 1, duration: 1, ease: 'none' },
-              0
-            )
-          }
+            const tl = gsap.timeline({
+              scrollTrigger: {
+                trigger: card,
+                start: 'top top+=96',
+                end: '+=55%',
+                scrub: 0.5,
+                pin: true,
+                anticipatePin: 1,
+                invalidateOnRefresh: true,
+              },
+            })
 
-          if (h3) {
-            try {
-              const split = SplitText.create(h3, { type: 'chars', mask: 'chars' })
-              splits.push(split)
-              if (split.chars && split.chars.length > 0) {
-                tl.from(
-                  split.chars,
-                  {
-                    yPercent: 120,
-                    duration: 0.45,
-                    ease: 'power3.out',
-                    stagger: 0.015,
-                  },
-                  0
-                )
-              }
-            } catch (err) {
-              console.warn('Work SplitText char split failed:', err)
-            }
-          }
-
-          if (metaEl) {
-            const metaChildren = Array.from(metaEl.children).filter(
-              (child) => child.tagName.toLowerCase() !== 'h3'
-            )
-            if (metaChildren.length > 0) {
+            if (zoomEl) {
               tl.fromTo(
-                metaChildren,
-                { y: 26, opacity: 0 },
-                {
-                  y: 0,
-                  opacity: 1,
-                  duration: 0.55,
-                  ease: 'power3.out',
-                  stagger: 0.07,
-                },
-                0.45
+                zoomEl,
+                { scale: 1.18 },
+                { scale: 1, duration: 1, ease: 'none' },
+                0
               )
             }
-          }
-        })
 
-        ScrollTrigger.refresh()
+            if (h3) {
+              try {
+                const split = SplitText.create(h3, { type: 'chars', mask: 'chars' })
+                splits.push(split)
+                if (split.chars && split.chars.length > 0) {
+                  tl.from(
+                    split.chars,
+                    {
+                      yPercent: 120,
+                      duration: 0.45,
+                      ease: 'power3.out',
+                      stagger: 0.015,
+                    },
+                    0
+                  )
+                }
+              } catch (err) {
+                console.warn('Work SplitText char split failed:', err)
+              }
+            }
+
+            if (metaEl) {
+              const metaChildren = Array.from(metaEl.children).filter(
+                (child) => child.tagName.toLowerCase() !== 'h3'
+              )
+              if (metaChildren.length > 0) {
+                tl.fromTo(
+                  metaChildren,
+                  { y: 26, opacity: 0 },
+                  {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.55,
+                    ease: 'power3.out',
+                    stagger: 0.07,
+                  },
+                  0.45
+                )
+              }
+            }
+          })
+
+          ScrollTrigger.refresh()
+        }
+
+        if (typeof document !== 'undefined' && document.fonts) {
+          document.fonts.ready.then(buildChapters)
+        } else {
+          buildChapters()
+        }
 
         return () => {
+          alive = false
           splits.forEach((s) => s.revert())
         }
       }
