@@ -30,6 +30,10 @@ export default function Preloader({ onComplete }: PreloaderProps) {
     document.body.style.overflow = 'hidden'
 
     const counterObj = { val: 0 }
+    const aRect = letterARef.current?.getBoundingClientRect()
+    const kRect = letterKRef.current?.getBoundingClientRect()
+    const travelDown = aRect ? Math.ceil(window.innerHeight - aRect.top + 16) : Math.ceil(window.innerHeight * 0.75)
+    const travelUp = kRect ? Math.ceil(kRect.bottom + 16) : Math.ceil(window.innerHeight * 0.75)
     const tl = gsap.timeline({
       onComplete: () => {
         document.body.style.overflow = ''
@@ -52,8 +56,8 @@ export default function Preloader({ onComplete }: PreloaderProps) {
     tl.to(
       letterARef.current,
       {
-        yPercent: 120,
-        duration: 0.6,
+        y: travelDown,
+        duration: 0.9,
         ease: 'power3.inOut',
       },
       '+=0.1'
@@ -62,8 +66,8 @@ export default function Preloader({ onComplete }: PreloaderProps) {
     tl.to(
       letterKRef.current,
       {
-        yPercent: -120,
-        duration: 0.6,
+        y: -travelUp,
+        duration: 0.9,
         ease: 'power3.inOut',
       },
       '<'
@@ -97,7 +101,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         duration: 0.85,
         ease: 'power4.inOut',
       },
-      '-=0.2'
+      '-=0.75'
     )
 
     tl.to(
@@ -142,15 +146,11 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
       >
         <div className="font-display font-extrabold text-7xl md:text-9xl tracking-tighter text-[var(--color-ink)] mb-4">
-          <span className="inline-block overflow-hidden">
-            <span ref={letterARef} className="inline-block will-change-transform">
-              A
-            </span>
+          <span ref={letterARef} className="inline-block will-change-transform">
+            A
           </span>
-          <span className="inline-block overflow-hidden">
-            <span ref={letterKRef} className="inline-block will-change-transform">
-              K
-            </span>
+          <span ref={letterKRef} className="inline-block will-change-transform">
+            K
           </span>
           <span ref={dotRef} className="text-[var(--color-accent)]">
             .
