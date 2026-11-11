@@ -1,0 +1,3 @@
+Contact: mailto:adityakumbhar038@gmail.com
+Preferred-Languages: en
+Canonical: https://adityakumbhar.dev/.well-known/security.txt
