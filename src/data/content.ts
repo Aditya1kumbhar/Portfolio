@@ -402,8 +402,8 @@ export const languages: Language[] = [
 export const statsMarquee: string[] = [
   '4 Live Products',
   '8.62 CGPA',
-  '12 Fishing Harbours Covered',
-  '10 Languages Supported',
+  '7-Agent AI System Built',
+  'Full-Stack and AI/ML Builder',
   '1 Research Paper Presented',
   'Team Leader, RISE-A2S1',
 ]
