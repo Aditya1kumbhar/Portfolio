@@ -110,7 +110,7 @@ export default function Journey() {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-[var(--color-ink)] opacity-0 group-hover:opacity-10 transition-opacity" />
-                    <span className="absolute bottom-2 right-2 font-mono text-[10px] bg-[var(--color-paper)] text-[var(--color-ink)] px-2 py-0.5 rounded shadow-xs uppercase tracking-wider">
+                    <span className="absolute bottom-2 right-2 font-mono text-[10px] bg-[var(--color-paper)] text-[var(--color-ink)] px-2 py-0.5 rounded rounded-br-none shadow-xs uppercase tracking-wider">
                       Click to expand
                     </span>
                   </div>
@@ -168,7 +168,7 @@ export default function Journey() {
               <img
                 src={selectedCert}
                 alt="Enlarged Certificate View"
-                className="max-h-[85vh] w-auto object-contain mx-auto rounded-xs"
+                className="max-h-[85vh] w-auto object-contain mx-auto rounded-none"
               />
             </div>
           </div>

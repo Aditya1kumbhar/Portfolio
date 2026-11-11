@@ -73,7 +73,7 @@ export default function Hero() {
       }
     })
 
-    // Condition 2: Pinned exit with parallax (desktop only)
+    // Condition 2: Natural exit with parallax (desktop only)
     mm.add(
       '(min-width: 1024px) and (prefers-reduced-motion: no-preference)',
       () => {
@@ -84,11 +84,9 @@ export default function Hero() {
         const exitTl = gsap.timeline({
           scrollTrigger: {
             trigger: section,
-            start: 'bottom bottom',
-            end: '+=35%',
+            start: 'top top',
+            end: 'bottom top',
             scrub: 0.5,
-            pin: true,
-            anticipatePin: 1,
           },
         })
 
@@ -100,11 +98,11 @@ export default function Hero() {
               yPercent: -4,
               scale: 0.98,
               opacity: 0,
-              duration: 0.5,
+              duration: 0.65,
               ease: 'none',
               transformOrigin: '50% 0%',
             },
-            0.5
+            0.35
           )
         }
         if (canvasEl) {
@@ -119,8 +117,8 @@ export default function Hero() {
           exitTl.fromTo(
             marqueeWrap,
             { opacity: 1 },
-            { opacity: 0, duration: 0.3, ease: 'none' },
-            0.7
+            { opacity: 0, duration: 0.4, ease: 'none' },
+            0.6
           )
         }
       }

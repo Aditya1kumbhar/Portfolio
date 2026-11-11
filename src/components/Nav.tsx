@@ -121,6 +121,18 @@ export default function Nav() {
             </button>
           </div>
         </div>
+        {/* Scroll-edge dissolve: content fades into paper under the header (mask fade, no blur, no glass). */}
+        <div
+          aria-hidden="true"
+          className={`pointer-events-none absolute inset-x-0 top-full -z-10 h-8 md:h-11 transition-opacity duration-300 ${
+            isScrolled ? 'opacity-100' : 'opacity-0'
+          }`}
+          style={{
+            backgroundColor: 'var(--color-paper)',
+            WebkitMaskImage: 'linear-gradient(to bottom, black 0%, transparent 100%)',
+            maskImage: 'linear-gradient(to bottom, black 0%, transparent 100%)',
+          }}
+        />
       </header>
 
       {/* Full-Screen Mobile Menu Drawer */}
