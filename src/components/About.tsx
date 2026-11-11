@@ -1,13 +1,96 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { SplitText } from 'gsap/SplitText'
 import SectionHeader from './SectionHeader'
 import PlaceholderImage from './PlaceholderImage'
 import { profile, education, languages } from '@/data/content'
 import { useReveal } from '@/hooks/useReveal'
 
+gsap.registerPlugin(ScrollTrigger, SplitText)
+
 export default function About() {
   const containerRef = useReveal<HTMLElement>()
+  const bioRef = useRef<HTMLParagraphElement>(null)
+  const gridRef = useRef<HTMLDivElement>(null)
+  const portraitRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    let mounted = true
+    let split: SplitText | null = null
+    let bioTrigger: ScrollTrigger | null = null
+    let parallaxTrigger: ScrollTrigger | null = null
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReducedMotion) return
+
+    const portraitEl = portraitRef.current
+    const bioEl = bioRef.current
+
+    const init = async () => {
+      try {
+        if (document.fonts) {
+          await document.fonts.ready
+        }
+        if (!mounted) return
+
+        if (bioEl) {
+          split = SplitText.create(bioEl, { type: 'words' })
+          if (split && split.words && split.words.length > 0) {
+            const anim = gsap.fromTo(
+              split.words,
+              { opacity: 0.16 },
+              {
+                opacity: 1,
+                stagger: 0.05,
+                ease: 'none',
+                scrollTrigger: {
+                  trigger: bioEl,
+                  start: 'top 82%',
+                  end: 'bottom 45%',
+                  scrub: 0.4,
+                },
+              }
+            )
+            bioTrigger = anim.scrollTrigger ?? null
+          }
+        }
+      } catch (err) {
+        console.warn('About SplitText word split failed:', err)
+      }
+
+      if (portraitEl && gridRef.current) {
+        const pAnim = gsap.fromTo(
+          portraitEl,
+          { y: -14 },
+          {
+            y: 14,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: gridRef.current,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 0.5,
+            },
+          }
+        )
+        parallaxTrigger = pAnim.scrollTrigger ?? null
+      }
+    }
+
+    init()
+
+    return () => {
+      mounted = false
+      if (bioTrigger) bioTrigger.kill()
+      if (parallaxTrigger) parallaxTrigger.kill()
+      if (split) split.revert()
+      if (portraitEl) gsap.killTweensOf(portraitEl)
+      if (bioEl) gsap.killTweensOf(bioEl)
+    }
+  }, [])
 
   return (
     <section
@@ -18,10 +101,10 @@ export default function About() {
       <div className="container-wide">
         <SectionHeader label="/ 03 - ABOUT" title="Builder, at the core" />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        <div ref={gridRef} className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* Left Column: Portrait & Rotating Circular Badge (5 cols) */}
           <div className="lg:col-span-5 relative flex flex-col items-center" data-reveal>
-            <div className="w-full max-w-md relative">
+            <div ref={portraitRef} className="about-portrait w-full max-w-md relative">
               <PlaceholderImage
                 aspectRatio="4/5"
                 title="Aditya Kumbhar - About"
@@ -66,7 +149,10 @@ export default function About() {
           <div className="lg:col-span-7 flex flex-col gap-10" data-reveal data-reveal-delay={0.15}>
             {/* Long Narrative Bio */}
             <div>
-              <p className="font-body text-lg sm:text-xl text-[var(--color-ink-soft)] leading-relaxed">
+              <p
+                ref={bioRef}
+                className="font-body text-lg sm:text-xl text-[var(--color-ink-soft)] leading-relaxed"
+              >
                 {profile.bio_long}
               </p>
             </div>

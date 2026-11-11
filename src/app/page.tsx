@@ -16,7 +16,12 @@ export default function Home() {
   return (
     <>
       {/* Initial Screen Preloader */}
-      <Preloader onComplete={() => setPreloaderFinished(true)} />
+      <Preloader
+        onComplete={() => {
+          setPreloaderFinished(true)
+          window.dispatchEvent(new Event('ak:intro'))
+        }}
+      />
 
       {/* Floating Navigation */}
       <Nav />

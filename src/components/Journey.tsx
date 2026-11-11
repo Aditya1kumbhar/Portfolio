@@ -21,7 +21,7 @@ export default function Journey() {
         <SectionHeader label="/ 04 - JOURNEY" title="Experience and Recognition" />
 
         {/* 1. Experience Table */}
-        <div className="mb-20" data-reveal>
+        <div className="mb-20">
           <div className="font-mono text-xs uppercase tracking-widest text-[var(--color-muted)] mb-6">
             / 01 - Career Milestones
           </div>
@@ -30,6 +30,7 @@ export default function Journey() {
             {experience.map((exp, idx) => (
               <div
                 key={idx}
+                data-reveal
                 className="py-8 px-4 -mx-4 transition-colors duration-300 hover:bg-[var(--color-paper)] rounded-sm group flex flex-col md:flex-row md:items-baseline justify-between gap-4"
               >
                 <div>
@@ -53,7 +54,7 @@ export default function Journey() {
         </div>
 
         {/* 2. Achievements Table */}
-        <div className="mb-20" data-reveal data-reveal-delay={0.1}>
+        <div className="mb-20">
           <div className="font-mono text-xs uppercase tracking-widest text-[var(--color-muted)] mb-6">
             / 02 - Key Achievements
           </div>
@@ -62,6 +63,7 @@ export default function Journey() {
             {achievements.map((item) => (
               <div
                 key={item.index}
+                data-reveal
                 className="py-6 px-4 -mx-4 grid grid-cols-1 sm:grid-cols-12 gap-4 items-baseline hover:bg-[var(--color-paper)] transition-colors rounded-sm"
               >
                 <div className="sm:col-span-1 font-mono text-xs font-bold text-[var(--color-accent)]">

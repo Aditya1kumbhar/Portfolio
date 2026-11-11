@@ -4,8 +4,9 @@ import React, { createContext, useContext, useEffect, useRef } from 'react'
 import Lenis from 'lenis'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { SplitText } from 'gsap/SplitText'
 
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger, SplitText)
 
 interface MotionContextType {
   lenis: Lenis | null
@@ -36,6 +37,8 @@ export default function MotionProvider({ children }: { children: React.ReactNode
     })
     lenisRef.current = lenis
 
+    ScrollTrigger.config({ ignoreMobileResize: true })
+
     const updateLenis = (time: number) => {
       lenis.raf(time * 1000)
     }
@@ -61,11 +64,17 @@ export default function MotionProvider({ children }: { children: React.ReactNode
     }
     window.addEventListener('resize', onResize)
 
+    const onLoad = () => {
+      ScrollTrigger.refresh()
+    }
+    window.addEventListener('load', onLoad)
+
     return () => {
       gsap.ticker.remove(updateLenis)
       lenis.off('scroll', onScroll)
       lenis.destroy()
       window.removeEventListener('resize', onResize)
+      window.removeEventListener('load', onLoad)
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
     }
   }, [])

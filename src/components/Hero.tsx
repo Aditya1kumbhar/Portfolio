@@ -1,6 +1,8 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import WaveCanvas from './WaveCanvas'
 import StatsMarquee from './StatsMarquee'
 import PlaceholderImage from './PlaceholderImage'
@@ -9,21 +11,142 @@ import { useMotion } from '@/providers/MotionProvider'
 import { useMagnetic } from '@/hooks/useMagnetic'
 import { useCursor } from '@/hooks/useCursor'
 
+gsap.registerPlugin(ScrollTrigger)
+
 export default function Hero() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
   const { scrollTo } = useMotion()
   const magneticWorkRef = useMagnetic<HTMLButtonElement>()
   const magneticResumeRef = useMagnetic<HTMLAnchorElement>()
   const { setCursorType } = useCursor()
 
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section) return
+
+    const mm = gsap.matchMedia()
+
+    // Condition 1: Intro sequence (runs whenever reduced motion is not requested)
+    mm.add('(prefers-reduced-motion: no-preference)', () => {
+      const nameLines = section.querySelectorAll('.hero-name-line')
+      const topbar = section.querySelector('.hero-topbar')
+      const lower = section.querySelector('.hero-lower')
+
+      // Set initial states via gsap.set before defining timeline (no CSS/SSR hidden states)
+      gsap.set(nameLines, { yPercent: 110 })
+      gsap.set([topbar, lower], { opacity: 0, y: 24 })
+
+      const introTl = gsap.timeline({ paused: true })
+      introTl
+        .to(nameLines, {
+          yPercent: 0,
+          duration: 1.0,
+          ease: 'power4.out',
+          stagger: 0.12,
+        })
+        .to(
+          [topbar, lower],
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power3.out',
+            stagger: 0.1,
+          },
+          '-=0.4'
+        )
+
+      let played = false
+      const playIntro = () => {
+        if (played) return
+        played = true
+        introTl.play()
+      }
+
+      window.addEventListener('ak:intro', playIntro, { once: true })
+      const fallbackTimer = window.setTimeout(playIntro, 3200)
+
+      return () => {
+        window.removeEventListener('ak:intro', playIntro)
+        window.clearTimeout(fallbackTimer)
+      }
+    })
+
+    // Condition 2: Pinned exit with parallax (desktop only)
+    mm.add(
+      '(min-width: 1024px) and (prefers-reduced-motion: no-preference)',
+      () => {
+        const nameLines = section.querySelectorAll('.hero-name-line')
+        const topbar = section.querySelector('.hero-topbar')
+        const lower = section.querySelector('.hero-lower')
+        const portrait = section.querySelector('.hero-portrait')
+        const canvasEl = section.querySelector('canvas')
+        const marqueeWrap = section.querySelector('.hero-stats-wrap')
+
+        const exitTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: '+=45%',
+            scrub: 0.5,
+            pin: true,
+            anticipatePin: 1,
+          },
+        })
+
+        if (topbar) {
+          exitTl.to(topbar, { opacity: 0, duration: 0.3, ease: 'none' }, 0)
+        }
+        if (lower) {
+          exitTl.to(lower, { opacity: 0, duration: 0.65, ease: 'none' }, 0)
+        }
+        if (nameLines.length > 0) {
+          exitTl.to(
+            nameLines,
+            {
+              yPercent: -6,
+              scale: 0.94,
+              transformOrigin: '50% 100%',
+              duration: 1,
+              ease: 'none',
+            },
+            0
+          )
+        }
+        if (portrait) {
+          exitTl.to(portrait, { yPercent: 8, duration: 1, ease: 'none' }, 0)
+        }
+        if (canvasEl) {
+          exitTl.to(canvasEl, { yPercent: 12, duration: 1, ease: 'none' }, 0)
+        }
+        if (marqueeWrap) {
+          exitTl.to(
+            marqueeWrap,
+            { opacity: 0, duration: 0.25, ease: 'none' },
+            0.75
+          )
+        }
+      }
+    )
+
+    return () => {
+      mm.revert()
+    }
+  }, [])
+
   return (
-    <section className="relative w-full min-h-screen pt-28 md:pt-36 flex flex-col justify-between overflow-hidden bg-[var(--color-paper)]">
+    <section
+      ref={sectionRef}
+      className="relative w-full min-h-screen pt-28 md:pt-36 flex flex-col justify-between overflow-hidden bg-[var(--color-paper)]"
+    >
       {/* Background Sine Wave Canvas */}
       <WaveCanvas />
 
       {/* Main Content Area */}
-      <div className="container-wide relative z-10 w-full my-auto py-8">
+      <div ref={contentRef} className="container-wide relative z-10 w-full my-auto py-8">
         {/* Top Info Bar */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pb-8 border-b border-[var(--color-line)]">
+        <div className="hero-topbar flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pb-8 border-b border-[var(--color-line)]">
           <div className="font-mono text-xs uppercase tracking-[0.16em] text-[var(--color-muted)]">
             / {profile.role}
           </div>
@@ -35,12 +158,12 @@ export default function Hero() {
         {/* Giant Stacked Typography */}
         <div className="my-8 md:my-14 select-none">
           <div className="overflow-hidden">
-            <h1 className="font-display font-extrabold text-[clamp(4.2rem,16vw,14rem)] leading-[0.85] tracking-[-0.03em] text-[var(--color-ink)] uppercase">
+            <h1 className="hero-name-line font-display font-extrabold text-[clamp(4.2rem,16vw,14rem)] leading-[0.85] tracking-[-0.03em] text-[var(--color-ink)] uppercase">
               {profile.hero_line_1}
             </h1>
           </div>
           <div className="overflow-hidden flex justify-start sm:justify-end">
-            <h1 className="font-display font-extrabold text-[clamp(4.2rem,16vw,14rem)] leading-[0.85] tracking-[-0.03em] text-[var(--color-ink)] uppercase">
+            <h1 className="hero-name-line font-display font-extrabold text-[clamp(4.2rem,16vw,14rem)] leading-[0.85] tracking-[-0.03em] text-[var(--color-ink)] uppercase">
               {profile.hero_line_2}
               <span className="text-[var(--color-accent)]">.</span>
             </h1>
@@ -48,7 +171,7 @@ export default function Hero() {
         </div>
 
         {/* Narrative & Portrait Dual Column */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center pt-4">
+        <div className="hero-lower grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center pt-4">
           {/* Tagline, Bio & CTAs (7 cols) */}
           <div className="lg:col-span-7 flex flex-col gap-6">
             <h2 className="font-display font-bold text-2xl sm:text-3xl md:text-4xl leading-tight text-[var(--color-ink)] tracking-tight">
@@ -86,7 +209,7 @@ export default function Hero() {
           </div>
 
           {/* Portrait Column (5 cols) */}
-          <div className="lg:col-span-5 flex justify-center lg:justify-end">
+          <div className="hero-portrait lg:col-span-5 flex justify-center lg:justify-end">
             <div className="w-full max-w-md">
               <PlaceholderImage
                 aspectRatio="4/5"
@@ -99,7 +222,7 @@ export default function Hero() {
       </div>
 
       {/* Bottom Ticker Marquee */}
-      <div className="relative z-10 w-full mt-12">
+      <div className="hero-stats-wrap relative z-10 w-full mt-12">
         <StatsMarquee />
       </div>
     </section>

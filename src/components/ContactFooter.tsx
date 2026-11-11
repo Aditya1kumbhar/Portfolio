@@ -1,17 +1,56 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { profile } from '@/data/content'
 import { useMotion } from '@/providers/MotionProvider'
 import { usePuneClock } from '@/hooks/usePuneClock'
 import { useMagnetic } from '@/hooks/useMagnetic'
 import { useCursor } from '@/hooks/useCursor'
 
+gsap.registerPlugin(ScrollTrigger)
+
 export default function ContactFooter() {
+  const statementRef = useRef<HTMLDivElement>(null)
   const { scrollTo } = useMotion()
   const puneClock = usePuneClock()
   const magneticButtonRef = useMagnetic<HTMLAnchorElement>()
   const { setCursorType } = useCursor()
+
+  useEffect(() => {
+    const el = statementRef.current
+    if (!el) return
+
+    const mm = gsap.matchMedia()
+
+    mm.add('(prefers-reduced-motion: no-preference)', () => {
+      const anim = gsap.fromTo(
+        el,
+        { y: 56, opacity: 0.25 },
+        {
+          y: 0,
+          opacity: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 95%',
+            end: 'top 55%',
+            scrub: 0.4,
+          },
+        }
+      )
+
+      return () => {
+        if (anim.scrollTrigger) anim.scrollTrigger.kill()
+        anim.kill()
+      }
+    })
+
+    return () => {
+      mm.revert()
+    }
+  }, [])
 
   const currentYear = new Date().getFullYear()
 
@@ -27,7 +66,10 @@ export default function ContactFooter() {
         </div>
 
         {/* Giant Statement & Magnetic Action */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-12 mb-16 md:mb-24">
+        <div
+          ref={statementRef}
+          className="flex flex-col lg:flex-row lg:items-end justify-between gap-12 mb-16 md:mb-24"
+        >
           <div>
             <h2 className="font-display font-extrabold text-[clamp(2.8rem,8.5vw,7.5rem)] leading-[0.9] tracking-[-0.03em] text-[var(--color-ink)] uppercase">
               Let us build
