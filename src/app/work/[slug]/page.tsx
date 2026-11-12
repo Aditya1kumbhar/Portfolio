@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       url: `/work/${project.slug}`,
       images: [
         {
-          url: project.image,
+          url: project.image.replace('.webp', '.jpg'),
           width: 1920,
           height: 1200,
           alt: `${project.name} - ${project.subtitle}`,
@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       card: 'summary_large_image',
       title,
       description: project.caseStudy.lede,
-      images: [project.image],
+      images: [project.image.replace('.webp', '.jpg')],
     },
   }
 }
