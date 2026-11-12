@@ -163,7 +163,7 @@ export const projects: Project[] = [
     category: 'AI for Climate Change, SDG 13',
     year: '2026',
     description: 'A 7-agent system that tells fishing crews whether it is safe to sail. A deterministic circuit breaker computes the safety index from wave height, wind, swell, and storm energy, and locks the verdict before any AI writes a word. The writer, an open model domain-aligned on the Nugen platform with our own marine corpus, then explains the verdict in 10 Indian languages. Built by Team RISE-A2S1, which I lead, for PCCOE IGC 2026 Indradhanu: Round 1 cleared, Round 2 prototype film submitted.',
-    image: '/images/project-tarang.jpg',
+    image: '/images/project-tarang.webp',
     stack: [
       'FastAPI',
       'React',
@@ -217,7 +217,7 @@ export const projects: Project[] = [
     category: 'Edge AI, Healthcare',
     year: '2026',
     description: 'A screenless wristband that detects falls and monitors heart rate and SpO2, with every computation running on the device itself. No cloud, no subscription, no data leaving the band. My final-year project and my entry to the electronica India Tech Challenge 2026.',
-    image: '/images/project-vitalguard.jpg',
+    image: '/images/project-vitalguard.webp',
     stack: [
       'ESP32',
       'C++',
@@ -266,7 +266,7 @@ export const projects: Project[] = [
     category: 'Healthcare, PWA',
     year: '2026',
     description: 'A progressive web app for elderly care that works fully offline and syncs when a connection returns, designed for real care homes with unreliable internet. Piloted at an old-age home in Pune.',
-    image: '/images/project-sevacare.jpg',
+    image: '/images/project-sevacare.webp',
     stack: [
       'Next.js',
       'Supabase',
@@ -312,7 +312,7 @@ export const projects: Project[] = [
     category: 'Consumer Platform',
     year: '2025',
     description: 'Reviews you can trust because they are verified twice: a GPS check-in proves you were there, and photo EXIF data proves the photo is real. Built for the places students actually argue about: hostels, messes, cafes, and services near campus.',
-    image: '/images/project-rateit.jpg',
+    image: '/images/project-rateit.webp',
     stack: [
       'Next.js',
       'Prisma',
