@@ -154,7 +154,7 @@ export default function Work() {
         if (zoomEl) {
           gsap.fromTo(
             zoomEl,
-            { scale: 1.18 },
+            { scale: 1.08 },
             {
               scale: 1,
               ease: 'none',
