@@ -5,7 +5,6 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SplitText } from 'gsap/SplitText'
 import SectionHeader from './SectionHeader'
-import PlaceholderImage from './PlaceholderImage'
 import { projects } from '@/data/content'
 import { useCursor } from '@/hooks/useCursor'
 import { useReveal } from '@/hooks/useReveal'
@@ -40,11 +39,17 @@ function ProjectCard({ project, isEven }: ProjectCardProps) {
         >
           <div className="project-zoom w-full will-change-transform">
             <div className="transition-transform duration-700 ease-out group-hover:scale-[1.04]">
-              <PlaceholderImage
-                aspectRatio="16/10"
-                title={`${project.name} - ${project.subtitle}`}
-                className="w-full"
-              />
+              <div
+                className="relative w-full overflow-hidden border border-[var(--color-line)] bg-[var(--color-paper-alt)]"
+                style={{ aspectRatio: '16/10' }}
+              >
+                <img
+                  src={project.image}
+                  alt={`${project.name} - ${project.subtitle}`}
+                  loading="lazy"
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              </div>
             </div>
           </div>
         </div>
