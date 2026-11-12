@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SplitText } from 'gsap/SplitText'
 import SectionHeader from './SectionHeader'
 import { projects } from '@/data/content'
+import Link from 'next/link'
 import { useCursor } from '@/hooks/useCursor'
 import { useReveal } from '@/hooks/useReveal'
 import { useImageClipReveal } from '@/hooks/useImageClipReveal'
@@ -97,6 +98,17 @@ function ProjectCard({ project, isEven }: ProjectCardProps) {
 
           {/* Link Matrix */}
           <div className="flex flex-wrap items-center gap-5 pt-2">
+            <Link
+              href={`/work/${project.slug}`}
+              onMouseEnter={() => setCursorType('link')}
+              onMouseLeave={() => setCursorType('default')}
+              className="group flex items-center gap-1 font-mono text-xs uppercase tracking-wider text-[var(--color-accent-ink)] hover:text-[var(--color-accent)] transition-colors underline underline-offset-4 decoration-[var(--color-accent)] hover:decoration-[var(--color-accent)]"
+            >
+              <span>Case Study</span>
+              <span className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                ↗
+              </span>
+            </Link>
             {project.links.map((link) => (
               <a
                 key={link.label}
