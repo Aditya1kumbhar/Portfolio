@@ -54,7 +54,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         </span>
         <button
           onClick={onClose}
-          className="font-mono text-sm uppercase tracking-widest px-4 py-2 border border-[var(--color-line)] rounded-full text-[var(--color-ink)] active:scale-[0.97] transition-transform"
+          className="font-mono text-sm uppercase tracking-widest px-4 py-2.5 min-h-[44px] border border-[var(--color-line)] rounded-full text-[var(--color-ink)] active:scale-[0.97] transition-transform"
           aria-label="Close menu"
         >
           Close

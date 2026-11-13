@@ -44,6 +44,7 @@
 /* Base Body */
 html {
   background-color: var(--color-paper);
+  overflow-x: clip;
 }
 
 body {
@@ -53,6 +54,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  overflow-x: clip;
   margin: 0;
   padding: 0;
 }

@@ -114,7 +114,7 @@ export default function About() {
 
               {/* Rotating Circular Text Badge */}
               <div
-                className="absolute -bottom-8 -right-8 w-36 h-36 md:w-44 md:h-44 rounded-full bg-[var(--color-paper)] border border-[var(--color-line)] shadow-xl flex items-center justify-center p-2 select-none pointer-events-none"
+                className="absolute -bottom-6 right-3 sm:-right-6 md:-bottom-8 md:-right-8 w-36 h-36 md:w-44 md:h-44 rounded-full bg-[var(--color-paper)] border border-[var(--color-line)] shadow-xl flex items-center justify-center p-2 select-none pointer-events-none"
                 aria-hidden="true"
               >
                 {/* SVG Circular Text Path */}

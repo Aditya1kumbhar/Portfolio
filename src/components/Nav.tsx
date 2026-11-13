@@ -101,7 +101,7 @@ export default function Nav() {
             {/* Mobile Menu Hamburger Toggle */}
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="lg:hidden p-2 rounded-md border border-[var(--color-line)] text-[var(--color-ink)] active:scale-[0.95] transition-transform"
+              className="lg:hidden p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-md border border-[var(--color-line)] text-[var(--color-ink)] active:scale-[0.95] transition-transform"
               aria-label="Open navigation menu"
             >
               <svg

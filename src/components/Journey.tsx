@@ -156,7 +156,7 @@ export default function Journey() {
             onClick={() => setSelectedCert(null)}
           >
             <div
-              className="relative max-w-4xl max-h-[90vh] bg-[var(--color-paper)] p-2 rounded-sm shadow-2xl"
+              className="relative w-full max-w-4xl max-h-[90vh] bg-[var(--color-paper)] p-2 rounded-sm shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <button
@@ -168,7 +168,7 @@ export default function Journey() {
               <img
                 src={selectedCert}
                 alt="Enlarged Certificate View"
-                className="max-h-[85vh] w-auto object-contain mx-auto rounded-none"
+                className="w-full h-auto max-h-[85vh] object-contain mx-auto rounded-none"
               />
             </div>
           </div>

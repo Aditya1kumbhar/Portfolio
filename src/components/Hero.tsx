@@ -132,7 +132,7 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-screen pt-28 md:pt-36 flex flex-col justify-between overflow-hidden bg-[var(--color-paper)]"
+      className="relative w-full min-h-svh pt-28 md:pt-36 flex flex-col justify-between overflow-hidden bg-[var(--color-paper)]"
     >
       {/* Background Sine Wave Canvas */}
       <WaveCanvas />
@@ -152,12 +152,12 @@ export default function Hero() {
         {/* Giant Stacked Typography */}
         <div className="my-8 md:my-14 select-none">
           <div className="overflow-hidden">
-            <h1 className="hero-name-line font-display font-extrabold text-[clamp(4.2rem,16vw,14rem)] leading-[0.85] tracking-[-0.03em] text-[var(--color-ink)] uppercase">
+            <h1 className="hero-name-line font-display font-extrabold text-[clamp(2.6rem,15.5vw,14rem)] leading-[0.85] tracking-[-0.03em] text-[var(--color-ink)] uppercase">
               {profile.hero_line_1}
             </h1>
           </div>
           <div className="overflow-hidden flex justify-start sm:justify-end">
-            <h1 className="hero-name-line font-display font-extrabold text-[clamp(4.2rem,16vw,14rem)] leading-[0.85] tracking-[-0.03em] text-[var(--color-ink)] uppercase">
+            <h1 className="hero-name-line font-display font-extrabold text-[clamp(2.6rem,15.5vw,14rem)] leading-[0.85] tracking-[-0.03em] text-[var(--color-ink)] uppercase">
               {profile.hero_line_2}
               <span className="text-[var(--color-accent)]">.</span>
             </h1>
