@@ -32,12 +32,23 @@ export interface ProofItem {
   label: string
 }
 
+export interface FieldPhoto {
+  src: string
+  alt: string
+  caption: string
+}
+
 export interface CaseStudy {
   role: string
   lede: string
   problem: string[]
   built: string[]
   proof: ProofItem[]
+  fieldVisit?: {
+    intro: string
+    findings: string[]
+    photos: FieldPhoto[]
+  }
 }
 
 export interface Project {
@@ -302,6 +313,26 @@ export const projects: Project[] = [
         { value: '4', label: 'Facility stats on one screen' },
         { value: '2', label: 'Layers: local IndexedDB, Supabase sync' },
       ],
+      fieldVisit: {
+        intro: 'SevaCare was designed from direct observation at Nandanvan Vrudhashram, an old-age home in Katraj, Pune, visited on 8 April 2026 as part of a Semester IV community project at Sarhad College. These are GPS-stamped photos from that visit.',
+        findings: [
+          'Finding one resident record in the paper registers took 5 to 7 minutes. The same lookup in SevaCare takes under 3 seconds.',
+          'Daily care ran on staff memory, which broke down whenever a new volunteer joined.',
+          'Caregivers were not comfortable with English-only software, so the interface had to work in Marathi and Hindi.',
+        ],
+        photos: [
+          {
+            src: '/images/sevacare-field-group.webp',
+            alt: 'Project team with residents at Nandanvan Vrudhashram, Katraj, Pune',
+            caption: 'With residents at Nandanvan Vrudhashram, Katraj. GPS-stamped, 8 April 2026.',
+          },
+          {
+            src: '/images/sevacare-field-exterior.webp',
+            alt: 'Nandanvan Vrudhashram old-age home, Katraj, Pune',
+            caption: 'Nandanvan Vrudhashram, Katraj, Pune. GPS-stamped, 8 April 2026.',
+          },
+        ],
+      },
     },
   },
   {

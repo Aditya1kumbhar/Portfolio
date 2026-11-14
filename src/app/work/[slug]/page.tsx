@@ -204,6 +204,53 @@ export default async function CaseStudyPage({ params }: PageProps) {
             </div>
           </section>
 
+          {/* Field visit (optional, only when the project carries fieldVisit data) */}
+          {cs.fieldVisit && (
+            <section className="mt-16 md:mt-24">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+                <div className="lg:col-span-4">
+                  <div className="font-mono text-xs md:text-sm uppercase tracking-[0.18em] text-[var(--color-muted)]">
+                    / Field Visit
+                  </div>
+                </div>
+                <div className="lg:col-span-8">
+                  <p className="font-body text-base md:text-lg leading-relaxed text-[var(--color-ink-soft)]">
+                    {cs.fieldVisit.intro}
+                  </p>
+                  <ul className="space-y-5 mt-8">
+                    {cs.fieldVisit.findings.map((item) => (
+                      <li key={item.slice(0, 24)} className="flex gap-4">
+                        <span
+                          className="mt-[0.6em] h-2 w-2 shrink-0 bg-[var(--color-accent)]"
+                          aria-hidden="true"
+                        />
+                        <p className="font-body text-base md:text-lg leading-relaxed text-[var(--color-ink-soft)]">
+                          {item}
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-10">
+                    {cs.fieldVisit.photos.map((photo) => (
+                      <figure key={photo.src}>
+                        <div className="relative w-full overflow-hidden rounded-sm border border-[var(--color-line)] bg-[var(--color-paper-alt)]">
+                          <img
+                            src={photo.src}
+                            alt={photo.alt}
+                            className="block h-auto w-full"
+                          />
+                        </div>
+                        <figcaption className="font-mono text-[11px] uppercase tracking-widest text-[var(--color-muted)] mt-3">
+                          {photo.caption}
+                        </figcaption>
+                      </figure>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
+
           {/* Next project */}
           <nav className="mt-16 md:mt-24">
             <div className="font-mono text-xs md:text-sm uppercase tracking-[0.18em] text-[var(--color-muted)] mb-4">
