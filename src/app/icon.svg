@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<style>
+  .tile { fill: #FAF9F5; }
+  .letters { fill: #10151D; }
+  .dot { fill: #B08A26; }
+  @media (prefers-color-scheme: dark) {
+    .tile { fill: #171410; }
+    .letters { fill: #F2ECDF; }
+    .dot { fill: #D9A441; }
+  }
+</style>
+<rect class="tile" width="64" height="64" rx="14"/>
+<g class="letters"><path transform="translate(6.77 41.82) scale(0.02863 -0.02863)" d="M8 0 266 687H481L739 0H548L507 119H233L192 0ZM276 253H463L414 398Q410 409 404.5 425.5Q399 442 393.5 460.5Q388 479 383.0 498.0Q378 517 373 531H366Q362 512 354.5 488.0Q347 464 339.5 440.0Q332 416 326 398Z"/><path transform="translate(27.41 41.82) scale(0.02863 -0.02863)" d="M75 0V687H254V382L526 687H748L492 406L753 0H541L368 284L254 179V0Z"/></g>
+<g class="dot"><rect x="52.17" y="37.22" width="4.6" height="4.6"/></g>
+</svg>
