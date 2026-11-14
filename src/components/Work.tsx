@@ -10,6 +10,7 @@ import Link from 'next/link'
 import { useCursor } from '@/hooks/useCursor'
 import { useReveal } from '@/hooks/useReveal'
 import { useImageClipReveal } from '@/hooks/useImageClipReveal'
+import LiveImageAction from '@/components/LiveImageAction'
 
 gsap.registerPlugin(ScrollTrigger, SplitText)
 
@@ -21,6 +22,9 @@ interface ProjectCardProps {
 function ProjectCard({ project, isEven }: ProjectCardProps) {
   const { setCursorType } = useCursor()
   const imageClipRef = useImageClipReveal<HTMLDivElement>()
+
+  const liveLink = project.links.find((l) => l.label.startsWith('Live'))
+  const filmLink = project.links.find((l) => l.label === 'Watch the Film')
 
   return (
     <div
@@ -34,7 +38,7 @@ function ProjectCard({ project, isEven }: ProjectCardProps) {
         {/* Project Image Frame (62% desktop width) */}
         <div
           ref={imageClipRef}
-          onMouseEnter={() => setCursorType('view')}
+          onMouseEnter={() => setCursorType('link')}
           onMouseLeave={() => setCursorType('default')}
           className="w-full lg:w-[62%] relative overflow-hidden rounded-sm group cursor-pointer"
         >
@@ -53,6 +57,15 @@ function ProjectCard({ project, isEven }: ProjectCardProps) {
               </div>
             </div>
           </div>
+          {liveLink && (
+            <LiveImageAction
+              projectName={project.name}
+              liveUrl={liveLink.url}
+              liveLabel={liveLink.label}
+              filmUrl={filmLink?.url}
+              chipText={filmLink ? 'LIVE / FILM ↗' : 'VISIT LIVE ↗'}
+            />
+          )}
         </div>
 
         {/* Project Metadata & Narrative (overlaps image on desktop) */}

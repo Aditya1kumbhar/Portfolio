@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import ContactFooter from '@/components/ContactFooter'
 import { projects } from '@/data/content'
+import LiveImageAction from '@/components/LiveImageAction'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -55,6 +56,8 @@ export default async function CaseStudyPage({ params }: PageProps) {
   const project = projects[index]
   const next = projects[(index + 1) % projects.length]
   const cs = project.caseStudy
+  const liveLink = project.links.find((l) => l.label.startsWith('Live'))
+  const filmLink = project.links.find((l) => l.label === 'Watch the Film')
 
   return (
     <>
@@ -101,6 +104,15 @@ export default async function CaseStudyPage({ params }: PageProps) {
               alt={`${project.name} - ${project.subtitle}`}
               className="absolute inset-0 h-full w-full object-cover themed-img"
             />
+            {liveLink && (
+              <LiveImageAction
+                projectName={project.name}
+                liveUrl={liveLink.url}
+                liveLabel={liveLink.label}
+                filmUrl={filmLink?.url}
+                chipText={filmLink ? 'LIVE / FILM ↗' : 'VISIT LIVE ↗'}
+              />
+            )}
           </div>
 
           {/* Meta row */}
