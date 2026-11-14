@@ -107,7 +107,7 @@ export default function Journey() {
                       src={cert.image}
                       alt={cert.title}
                       loading="lazy"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 themed-img"
                     />
                     <div className="absolute inset-0 bg-[var(--color-ink)] opacity-0 group-hover:opacity-10 transition-opacity" />
                     <span className="absolute bottom-2 right-2 font-mono text-[10px] bg-[var(--color-paper)] text-[var(--color-ink)] px-2 py-0.5 rounded rounded-br-none shadow-xs uppercase tracking-wider">
@@ -168,7 +168,7 @@ export default function Journey() {
               <img
                 src={selectedCert}
                 alt="Enlarged Certificate View"
-                className="w-full h-auto max-h-[85vh] object-contain mx-auto rounded-none"
+                className="w-full h-auto max-h-[85vh] object-contain mx-auto rounded-none themed-img"
               />
             </div>
           </div>

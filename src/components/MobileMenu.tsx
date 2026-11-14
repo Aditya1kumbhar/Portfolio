@@ -2,6 +2,7 @@
 
 import React, { useEffect } from 'react'
 import { useMotion } from '@/providers/MotionProvider'
+import { useTheme } from '@/hooks/useTheme'
 import { profile } from '@/data/content'
 
 interface MobileMenuProps {
@@ -19,6 +20,7 @@ const navLinks = [
 
 export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const { scrollTo } = useMotion()
+  const { setting, setTheme } = useTheme()
 
   useEffect(() => {
     if (isOpen) {
@@ -78,6 +80,40 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           </button>
         ))}
       </nav>
+
+      {/* Theme Switcher Row */}
+      <div className="border-t border-[var(--color-line)] pt-6 pb-2 flex items-center justify-between">
+        <span className="font-mono text-xs uppercase tracking-widest text-[var(--color-muted)]">
+          Theme
+        </span>
+        <div className="flex items-center gap-2" role="group" aria-label="Theme selection">
+          {(
+            [
+              { key: 'light', label: 'Light' },
+              { key: 'dark', label: 'Dark' },
+              { key: 'system', label: 'Auto' },
+            ] as const
+          ).map(({ key, label }) => {
+            const isActive = setting === key
+            return (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setTheme(key)}
+                aria-pressed={isActive}
+                suppressHydrationWarning
+                className={`min-h-[44px] min-w-[44px] px-3.5 py-2 rounded-full border text-xs font-mono transition-all active:scale-[0.97] ${
+                  isActive
+                    ? 'border-[var(--color-accent)] text-[var(--color-accent)] font-semibold bg-[var(--color-paper-alt)]'
+                    : 'border-[var(--color-line)] text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]'
+                }`}
+              >
+                {label}
+              </button>
+            )
+          })}
+        </div>
+      </div>
 
       {/* Bottom Footer Info */}
       <div className="border-t border-[var(--color-line)] pt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">

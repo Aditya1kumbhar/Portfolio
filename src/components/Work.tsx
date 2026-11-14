@@ -48,7 +48,7 @@ function ProjectCard({ project, isEven }: ProjectCardProps) {
                   src={project.image}
                   alt={`${project.name} - ${project.subtitle}`}
                   loading="lazy"
-                  className="absolute inset-0 h-full w-full object-cover"
+                  className="absolute inset-0 h-full w-full object-cover themed-img"
                 />
               </div>
             </div>

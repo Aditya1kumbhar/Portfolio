@@ -6,6 +6,7 @@ import { usePuneClock } from '@/hooks/usePuneClock'
 import { useCursor } from '@/hooks/useCursor'
 import { profile } from '@/data/content'
 import MobileMenu from './MobileMenu'
+import ThemeToggle from './ThemeToggle'
 
 const navLinks = [
   { label: 'Expertise', href: '#expertise' },
@@ -83,6 +84,8 @@ export default function Nav() {
 
           {/* Right: Live Clock & Availability Badge */}
           <div className="flex items-center gap-4 sm:gap-6">
+            <ThemeToggle />
+
             {/* Live Pune Clock (Hidden on very small screens) */}
             <div className="hidden sm:flex items-center gap-2 font-mono text-xs tabular text-[var(--color-muted)]">
               <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] opacity-60" />

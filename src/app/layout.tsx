@@ -28,7 +28,10 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const viewport: Viewport = {
-  themeColor: '#FAF9F5',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#FAF9F5' },
+    { media: '(prefers-color-scheme: dark)', color: '#171410' },
+  ],
   width: 'device-width',
   initialScale: 1,
 }
@@ -99,9 +102,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${archivo.variable} ${inter.variable} ${jetbrainsMono.variable}`}
     >
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');var d=t==='dark'||((!t||t==='system')&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);if(d){document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark';}else{document.documentElement.classList.remove('dark');document.documentElement.style.colorScheme='light';}}catch(e){}})();`,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

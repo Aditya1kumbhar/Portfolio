@@ -99,7 +99,7 @@ export default async function CaseStudyPage({ params }: PageProps) {
             <img
               src={project.image}
               alt={`${project.name} - ${project.subtitle}`}
-              className="absolute inset-0 h-full w-full object-cover"
+              className="absolute inset-0 h-full w-full object-cover themed-img"
             />
           </div>
 
@@ -237,7 +237,7 @@ export default async function CaseStudyPage({ params }: PageProps) {
                           <img
                             src={photo.src}
                             alt={photo.alt}
-                            className="block h-auto w-full"
+                            className="block h-auto w-full themed-img"
                           />
                         </div>
                         <figcaption className="font-mono text-[11px] uppercase tracking-widest text-[var(--color-muted)] mt-3">

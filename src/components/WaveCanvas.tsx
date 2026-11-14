@@ -36,10 +36,22 @@ export default function WaveCanvas() {
       }
     }
 
-    // 3 sine wave specifications (accent, soft ink, accent)
-    const waves = [
+    // Dual palettes for seamless Day / Night theme switching
+    const DAY_PALETTE = [
+      'rgba(176, 138, 38, 0.16)', // Accent gold
+      'rgba(60, 70, 84, 0.12)', // Soft ink
+      'rgba(176, 138, 38, 0.11)', // Accent gold subtle
+    ]
+
+    const NIGHT_PALETTE = [
+      'rgba(217, 164, 65, 0.20)', // lamp-amber
+      'rgba(242, 236, 223, 0.10)', // cream ink
+      'rgba(217, 164, 65, 0.13)', // lamp-amber subtle
+    ]
+
+    // 3 sine wave specifications
+    const waveConfigs = [
       {
-        color: 'rgba(176, 138, 38, 0.16)', // Accent gold
         lineWidth: 1.5,
         amplitude: 28,
         frequency: 0.0035,
@@ -47,7 +59,6 @@ export default function WaveCanvas() {
         verticalOffset: 0.52,
       },
       {
-        color: 'rgba(60, 70, 84, 0.12)', // Soft ink
         lineWidth: 1.2,
         amplitude: 36,
         frequency: 0.0028,
@@ -55,7 +66,6 @@ export default function WaveCanvas() {
         verticalOffset: 0.48,
       },
       {
-        color: 'rgba(176, 138, 38, 0.11)', // Accent gold subtle
         lineWidth: 1.0,
         amplitude: 22,
         frequency: 0.0042,
@@ -64,12 +74,33 @@ export default function WaveCanvas() {
       },
     ]
 
+    // Track theme state via class attribute on <html>
+    const isDarkRef = {
+      current: typeof document !== 'undefined' && document.documentElement.classList.contains('dark'),
+    }
+
+    const themeObserver = new MutationObserver(() => {
+      const isDark = document.documentElement.classList.contains('dark')
+      if (isDarkRef.current !== isDark) {
+        isDarkRef.current = isDark
+        if (prefersReducedMotion || isSmallScreen || !isVisible) {
+          drawFrame(0)
+        }
+      }
+    })
+
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    })
+
     const drawFrame = (time: number) => {
       ctx.clearRect(0, 0, width, height)
+      const palette = isDarkRef.current ? NIGHT_PALETTE : DAY_PALETTE
 
-      waves.forEach((w) => {
+      waveConfigs.forEach((w, index) => {
         ctx.beginPath()
-        ctx.strokeStyle = w.color
+        ctx.strokeStyle = palette[index]
         ctx.lineWidth = w.lineWidth
 
         const baseY = height * w.verticalOffset
@@ -132,6 +163,7 @@ export default function WaveCanvas() {
       cancelAnimationFrame(animationFrameId)
       window.removeEventListener('resize', handleResize)
       observer.disconnect()
+      themeObserver.disconnect()
       document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
   }, [])

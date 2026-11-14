@@ -8,13 +8,44 @@
   --color-ink-soft: #3C4654;
   --color-accent: #B08A26;
   --color-accent-ink: #8A6D1D;
-  --color-muted: #7A828E;
+  --color-muted: #68707C;
   --color-line: #E3DFD3;
 
   /* Typography */
   --font-display: var(--font-archivo), system-ui, sans-serif;
   --font-body: var(--font-inter), system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+.dark {
+  --color-paper: #171410;
+  --color-paper-alt: #211C16;
+  --color-ink: #F2ECDF;
+  --color-ink-soft: #CFC6B2;
+  --color-accent: #D9A441;
+  --color-accent-ink: #E7BC60;
+  --color-muted: #9C937C;
+  --color-line: #2E2820;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--color-muted);
+}
+
+.dark .themed-img {
+  filter: brightness(0.85) contrast(1.06);
+  box-shadow: 0 0 0 1px var(--color-line);
+}
+
+/* View Transitions Circle Reveal */
+::view-transition-old(root) {
+  animation: none;
+}
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
 }
 
 /* Custom Selection */
